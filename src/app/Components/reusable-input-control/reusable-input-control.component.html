@@ -18,9 +18,9 @@
                             {{el.errorMasseges.requiredMassege}}
                         </span>
                         <span
-                        *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched">
-                        {{el.errorMasseges.validDateMessage}}
-                    </span>
+                            *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched">
+                            {{el.errorMasseges.validDateMessage}}
+                        </span>
                     </p>
                 </div>
 
@@ -53,7 +53,7 @@
                 <button class="btn  btn-warning mx-4">
                     <i class="bi bi-plus"></i>
                 </button>
-            
+
             </div>
 
 
@@ -64,7 +64,7 @@
 
 
 
-        
+
         <div formArrayName="controlsArray">
             <div class="row justify-content-center align-items-center"
                 *ngFor="let group of getControlsArr.controls; let i=index; ">
@@ -76,18 +76,18 @@
 
                         <p class="help-block my-3">
                             <span
-                                *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
+                                *ngIf="group.get(el[uniqueKey])?.hasError('minlength') && group.get(el[uniqueKey])?.touched ">
                                 {{el.errorMasseges.minLengthMassege}}
                             </span>
-    
+
                             <span
-                                *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
+                                *ngIf=" group.get(el[uniqueKey])?.hasError('required') && group.get(el[uniqueKey])?.touched">
                                 {{el.errorMasseges.requiredMassege}}
                             </span>
                             <span
-                            *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched">
-                            {{el.errorMasseges.validDateMessage}}
-                        </span>
+                                *ngIf="group.get(el[uniqueKey])?.hasError('invalidDate') && group.get(el[uniqueKey])?.touched">
+                                {{el.errorMasseges.validDateMessage}}
+                            </span>
                         </p>
                     </div>
 
