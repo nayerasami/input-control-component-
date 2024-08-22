@@ -15,7 +15,6 @@ export class ReusableInputControlComponent implements OnInit {
   uniqueKey: any;
   isSubmitted: boolean = false;
   formControls: any;
-  // controlsArray: any = 'controlsArray'
 
 
 
@@ -26,12 +25,6 @@ export class ReusableInputControlComponent implements OnInit {
     this.typeIdentifer = this.controlOptions.typeIdentifier || 'inputType'
     this.uniqueKey = this.controlOptions.uniqueKey || 'name'
 
-
-    // this.inputControlForm = new FormGroup(
-    //   {
-    //     ...formGroup,
-    //     controlsArray: new FormArray([])
-    //   })
 
     this.inputControlForm = new FormGroup({
       ...this.createNewFormGroup(),

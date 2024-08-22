@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Ioptions } from './Models/options';
-
+import {CustomValidator} from '../../src/app/validators/customValidators'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -32,10 +32,13 @@ export class AppComponent {
       name: 'joinDate',
       inputType: 'text',
       validators: [
-        Validators.required
+        Validators.required,
+        CustomValidator.checkDateValidity
       ] ,
-       errorMasseges:{
-        requiredMassege:'Enter Valid date',
+      errorMasseges:{
+        requiredMessage:'Enter Valid date',
+        validDateMessage:'The date must be in the past'
+
       }
     },{
       type: 'checkbox',

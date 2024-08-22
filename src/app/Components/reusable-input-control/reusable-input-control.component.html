@@ -17,7 +17,10 @@
                             *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
                             {{el.errorMasseges.requiredMassege}}
                         </span>
-
+                        <span
+                        *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched">
+                        {{el.errorMasseges.validDateMessage}}
+                    </span>
                     </p>
                 </div>
 
@@ -59,6 +62,9 @@
             </span>
         </div>
 
+
+
+        
         <div formArrayName="controlsArray">
             <div class="row justify-content-center align-items-center"
                 *ngFor="let group of getControlsArr.controls; let i=index; ">
@@ -73,12 +79,15 @@
                                 *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
                                 {{el.errorMasseges.minLengthMassege}}
                             </span>
-
+    
                             <span
                                 *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
                                 {{el.errorMasseges.requiredMassege}}
                             </span>
-
+                            <span
+                            *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched">
+                            {{el.errorMasseges.validDateMessage}}
+                        </span>
                         </p>
                     </div>
 
@@ -122,6 +131,8 @@
                 </span>
             </div>
         </div>
+
+
 
 
 
