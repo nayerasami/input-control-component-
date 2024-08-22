@@ -13,37 +13,47 @@ export class AppComponent {
   inputsAttributes: any = [
     {
       type: 'text',
-      lable: 'Company Name',
+      label: 'Company Name',
       name: 'companyName',
       inputType: 'text',
       validators: [
         Validators.minLength(4),
         Validators.required
-      ]
+      ],
+      errorMasseges:{
+        requiredMassege:'Enter Valid Company name',
+        minLengthMassege :'company name must be at least 4'
+      }
     },
-    {
+    {  
+
       type: 'date',
-      lable: 'Join Date',
+      label: 'Join Date',
       name: 'joinDate',
       inputType: 'text',
       validators: [
         Validators.required
-      ]
+      ] ,
+       errorMasseges:{
+        requiredMassege:'Enter Valid date',
+      }
     },{
       type: 'checkbox',
-      lable: 'experiance',
+      label: 'experiance',
       name: 'experiance',
       inputType: 'checkbox',
       value: 'currently working',
       validators: [
         Validators.required
-      ]
+      ],
+      errorMasseges:{
+        requiredMassege:'you must check the work status',
+      }
     },
   ]
 
 
   options: Ioptions = {
-
     typeIdentifier:'inputType' ,
     uniqueKey:'name',
     inputsArray: this.inputsAttributes,

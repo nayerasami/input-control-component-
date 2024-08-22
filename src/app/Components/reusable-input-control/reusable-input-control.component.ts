@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-reusable-input-control',
@@ -7,38 +7,102 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./reusable-input-control.component.css']
 })
 export class ReusableInputControlComponent implements OnInit {
+
   @Input() controlOptions: any;
   controls: any[] = []
   inputControlForm: any;
   typeIdentifer: any;
   uniqueKey: any;
-  ngOnInit(): void {
+  isSubmitted: boolean = false;
+  formControls: any;
+  // controlsArray: any = 'controlsArray'
 
+
+
+  ngOnInit(): void {
     console.log(this.controlOptions)
     this.controls = this.controlOptions.inputsArray
     console.log(this.controls)
-    this.typeIdentifer = this.controlOptions.typeIdentifier
-    this.uniqueKey = this.controlOptions.uniqueKey
-    const formGroup: any = {};
+    this.typeIdentifer = this.controlOptions.typeIdentifier || 'inputType'
+    this.uniqueKey = this.controlOptions.uniqueKey || 'name'
 
 
-    this.controls.forEach((control: any) => {
-      formGroup[control.name] = new FormControl('', control.validators || [])
-    });
+    // this.inputControlForm = new FormGroup(
+    //   {
+    //     ...formGroup,
+    //     controlsArray: new FormArray([])
+    //   })
 
-    this.inputControlForm = new FormGroup(formGroup)
-
-    console.log(formGroup)
+    this.inputControlForm = new FormGroup({
+      ...this.createNewFormGroup,
+      controlsArray: new FormArray([])
+    })
   }
 
+
+  createNewFormGroup() {
+    const formGroup: any = {}
+    this.controls.forEach((control: any) => {
+      formGroup[control[this.uniqueKey]] = new FormControl('', control.validators || [])
+    });
+
+    return formGroup
+
+  }
+
+  get getControlsArr(): FormArray {
+    return this.inputControlForm.get('controlsArray') as FormArray
+  }
+
+
+  getControl(name: any): any {
+    return this.inputControlForm.get(name);
+  }
+
+
+
   onSubmit() {
-    console.log(this.inputControlForm.value)
+
+    if (this.inputControlForm.valid) {
+      console.log('Form Submitted!', this.inputControlForm);
+      this.isSubmitted = false;
+      // this.inputControlForm.reset()
+      this.addNewControl()
+
+    } else {
+      this.isSubmitted = true
+    }
+
+
   }
 
 
   addNewControl() {
+    const newFormGroup = this.createNewFormGroup()
+    this.getControlsArr.push(newFormGroup)
 
+    //this.getControlsArr.push(controlsElements)
+
+
+    // this.controls.forEach((control: any) => {
+    //   formGroup[control[this.uniqueKey]] = new FormControl('', control.validators || [])
+    // })
+
+
+    // console.log(controlsElements, " addNewControl controls")
+    // console.log(this.getControlsArr.controls, "controlsArray")
+    // this.formControls = this.getControlsArr.controls.map((El: any) => {
+    //   console.log(El.controls)
+    //   const keys = Object.keys(El.controls);
+    //   console.log(keys, "keyss")
+    //   return El.controls;
+    // })
+    console.log(this.formControls, 'formControls')
   }
+
+
+
+
 
 
   deleteControl() {
