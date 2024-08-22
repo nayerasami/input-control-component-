@@ -34,7 +34,7 @@ export class ReusableInputControlComponent implements OnInit {
     //   })
 
     this.inputControlForm = new FormGroup({
-      ...this.createNewFormGroup,
+      ...this.createNewFormGroup(),
       controlsArray: new FormArray([])
     })
   }
@@ -78,26 +78,11 @@ export class ReusableInputControlComponent implements OnInit {
 
 
   addNewControl() {
-    const newFormGroup = this.createNewFormGroup()
+    const newFormGroup = new FormGroup(this.createNewFormGroup())
     this.getControlsArr.push(newFormGroup)
 
-    //this.getControlsArr.push(controlsElements)
 
-
-    // this.controls.forEach((control: any) => {
-    //   formGroup[control[this.uniqueKey]] = new FormControl('', control.validators || [])
-    // })
-
-
-    // console.log(controlsElements, " addNewControl controls")
-    // console.log(this.getControlsArr.controls, "controlsArray")
-    // this.formControls = this.getControlsArr.controls.map((El: any) => {
-    //   console.log(El.controls)
-    //   const keys = Object.keys(El.controls);
-    //   console.log(keys, "keyss")
-    //   return El.controls;
-    // })
-    console.log(this.formControls, 'formControls')
+    console.log(this.getControlsArr, 'getControlsArr')
   }
 
 
@@ -105,8 +90,8 @@ export class ReusableInputControlComponent implements OnInit {
 
 
 
-  deleteControl() {
-
+  deleteControl(index:any) {
+    this.getControlsArr.removeAt(index)
   }
 
 

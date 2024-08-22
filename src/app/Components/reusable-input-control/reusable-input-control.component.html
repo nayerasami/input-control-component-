@@ -1,21 +1,20 @@
 <div class="container">
 
     <form [formGroup]="inputControlForm" (ngSubmit)=" onSubmit()">
-
-
-      
         <div class="row justify-content-center align-items-center">
-            <div class="col-md-3" *ngFor="let el of controls;"  [ngSwitch]="el[typeIdentifer]">
-                <div class="mb-3 d-flex flex-column" *ngSwitchCase ="'text'">
+            <div class="col-md-3" *ngFor="let el of controls;" [ngSwitch]="el[typeIdentifer]">
+                <div class="mb-3 d-flex flex-column" *ngSwitchCase="'text'">
                     <label for="{{el.name}}" class="form-label ">{{el.label}}</label>
                     <input [type]="el.type" class="form-control" id="{{el.name}}" [formControlName]="el.name">
 
                     <p class="help-block my-3">
-                        <span *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
+                        <span
+                            *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
                             {{el.errorMasseges.minLengthMassege}}
                         </span>
 
-                        <span *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
+                        <span
+                            *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
                             {{el.errorMasseges.requiredMassege}}
                         </span>
 
@@ -24,8 +23,9 @@
 
 
 
-                <div class="mb-3  " *ngSwitchCase ="'checkbox'">
-                    <input class="form-check-input" type="checkbox" [value]="el.value" id="{{el.name}}" [formControlName]="el.name" />
+                <div class="mb-3  " *ngSwitchCase="'checkbox'">
+                    <input class="form-check-input" type="checkbox" [value]="el.value" id="{{el.name}}"
+                        [formControlName]="el.name" />
                     <label class="form-check-label ms-2" for="{{el.name}}"> {{el.value}} </label>
                     <p class="help-block my-3">
                         <span *ngIf="  !getControl(el[uniqueKey])?.value && getControl(el[uniqueKey])?.touched">
@@ -34,7 +34,7 @@
                     </p>
                 </div>
 
-                <div class="mb-3" *ngSwitchCase ="'select'">
+                <div class="mb-3" *ngSwitchCase="'select'">
                     <label class="form-check-label ms-2" for="{{el.name}}"> {{el.label}} </label>
                     <select class="form-select" [formControlName]="el.name">
                         <option *ngFor="let value of el.values" [value]="value">{{ value }}</option>
@@ -44,37 +44,88 @@
 
             </div>
 
-    
-    
+
+
             <div class="col-md-3">
                 <button class="btn  btn-warning mx-4">
                     <i class="bi bi-plus"></i>
                 </button>
-                <button class="btn btn-danger" (click)="deleteControl()" type="button">
-                    <i class="bi bi-dash"></i>
-                </button>
+            
             </div>
 
-     
-         <span class="text-danger" *ngIf="isSubmitted">
-            *Enter Valid Data!
-        </span>
-   </div>
 
-   
-   <!-- <form [formGroup]="inputControlForm" (ngSubmit)="onSubmit()">
-        <div formArrayName="controlsArray">
-          <div *ngFor="let group of getControlsArr.controls; let i = index" [formGroupName]="i">
-            <div *ngFor="let control of controls">
-              <label [for]="control[name]">{{ control.label }}</label>
-              <input [id]="control[name]" [formControlName]="control[name]" [type]="typeIdentifer" />
-            </div>
-          </div>
+            <span class="text-danger" *ngIf="isSubmitted">
+                *Enter Valid Data!
+            </span>
         </div>
-        <button type="submit">Submit</button>
-      </form> -->
-      
+
+        <div formArrayName="controlsArray">
+            <div class="row justify-content-center align-items-center"
+                *ngFor="let group of getControlsArr.controls; let i=index; ">
+
+                <div class="col-md-3" *ngFor="let el of controls" [ngSwitch]="el[typeIdentifer]" [formGroupName]="i">
+                    <div class="mb-3 d-flex flex-column" *ngSwitchCase="'text'">
+                        <label for="{{el.name}}" class="form-label ">{{el.label}}</label>
+                        <input [type]="el.type" class="form-control" id="{{el.name}}" [formControlName]="el.name">
+
+                        <p class="help-block my-3">
+                            <span
+                                *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
+                                {{el.errorMasseges.minLengthMassege}}
+                            </span>
+
+                            <span
+                                *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
+                                {{el.errorMasseges.requiredMassege}}
+                            </span>
+
+                        </p>
+                    </div>
+
+
+
+                    <div class="mb-3  " *ngSwitchCase="'checkbox'">
+                        <input class="form-check-input" type="checkbox" [value]="el.value" id="{{el.name}}"
+                            [formControlName]="el.name" />
+                        <label class="form-check-label ms-2" for="{{el.name}}"> {{el.value}} </label>
+                        <p class="help-block my-3">
+                            <span *ngIf="  !getControl(el[uniqueKey])?.value && getControl(el[uniqueKey])?.touched">
+                                {{el.errorMasseges.requiredMassege}}
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="mb-3" *ngSwitchCase="'select'">
+                        <label class="form-check-label ms-2" for="{{el.name}}"> {{el.label}} </label>
+                        <select class="form-select" [formControlName]="el.name">
+                            <option *ngFor="let value of el.values" [value]="value">{{ value }}</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="col-md-3">
+                    <button class="btn  btn-warning mx-4">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteControl(i)" type="button">
+                        <i class="bi bi-dash"></i>
+                    </button>
+                </div>
+
+
+                <span class="text-danger" *ngIf="isSubmitted">
+                    *Enter Valid Data!
+                </span>
+            </div>
+        </div>
+
 
 
     </form>
+
+
 </div>
