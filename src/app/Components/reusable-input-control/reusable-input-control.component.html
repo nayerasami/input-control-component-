@@ -1,92 +1,26 @@
 <div class="container">
 
     <form [formGroup]="inputControlForm" (ngSubmit)=" onSubmit()">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-3" *ngFor="let el of controls;" [ngSwitch]="el[typeIdentifer]">
-                <div class="mb-3 d-flex flex-column" *ngSwitchCase="'text'">
-                    <label for="{{el.name}}" class="form-label ">{{el.label}}</label>
-                    <input [type]="el.type" class="form-control" id="{{el.name}}" [formControlName]="el.name">
-
-                    <p class="help-block my-3">
-                        <span
-                            *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
-                            {{el.errorMasseges.minLengthMassege}}
-                        </span>
-
-                        <span
-                            *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
-                            {{el.errorMasseges.requiredMassege}}
-                        </span>
-                        <span
-                            *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched">
-                            {{el.errorMasseges.validDateMessage}}
-                        </span>
-                    </p>
-                </div>
-
-
-
-                <div class="mb-3  " *ngSwitchCase="'checkbox'">
-                    <input class="form-check-input" type="checkbox" [value]="el.value" id="{{el.name}}"
-                        [formControlName]="el.name" />
-                    <label class="form-check-label ms-2" for="{{el.name}}"> {{el.value}} </label>
-                    <p class="help-block my-3">
-                        <span *ngIf="  !getControl(el[uniqueKey])?.value && getControl(el[uniqueKey])?.touched">
-                            {{el.errorMasseges.requiredMassege}}
-                        </span>
-                    </p>
-                </div>
-
-                <div class="mb-3" *ngSwitchCase="'select'">
-                    <label class="form-check-label ms-2" for="{{el.name}}"> {{el.label}} </label>
-                    <select class="form-select" [formControlName]="el.name">
-                        <option *ngFor="let value of el.values" [value]="value">{{ value }}</option>
-                    </select>
-                </div>
-
-
-            </div>
-
-
-
-            <div class="col-md-3">
-                <button class="btn  btn-warning mx-4">
-                    <i class="bi bi-plus"></i>
-                </button>
-
-            </div>
-
-
-            <span class="text-danger" *ngIf="isSubmitted">
-                *Enter Valid Data!
-            </span>
-        </div>
-
-
-
-
-        <div formArrayName="controlsArray">
-            <div class="row justify-content-center align-items-center"
-                *ngFor="let group of getControlsArr.controls; let i=index; ">
-
-                <div class="col-md-3" *ngFor="let el of controls" [ngSwitch]="el[typeIdentifer]" [formGroupName]="i">
+        <div formGroupName="mainFormGroup">
+            <div class="row  justify-content-center align-items-center">
+                <div class="col-md-2" *ngFor="let el of controls;" [ngSwitch]="el[typeIdentifier]">
                     <div class="mb-3 d-flex flex-column" *ngSwitchCase="'text'">
-                        <label for="{{el.name}}" class="form-label ">{{el.label}}</label>
-                        <input [type]="el.type" class="form-control" id="{{el.name}}" [formControlName]="el.name">
+                        <label for="{{el.name}}"  class="form-label ">{{el.label}}</label>
+                        <input [type]="el.type"  class="form-control" id="{{el.name}}" [formControlName]="el.name">
 
                         <p class="help-block my-3">
                             <span
-                                *ngIf="group.get(el[uniqueKey])?.hasError('minlength') && group.get(el[uniqueKey])?.touched ">
-                                {{el.errorMasseges.minLengthMassege}}
+                                *ngIf=" getControl(el[uniqueKey])?.hasError('minlength') && getControl(el[uniqueKey])?.touched ">
+                                {{el.errorMessages.minLengthMessage}}
                             </span>
 
                             <span
-                                *ngIf=" group.get(el[uniqueKey])?.hasError('required') && group.get(el[uniqueKey])?.touched">
-                                {{el.errorMasseges.requiredMassege}}
+                                *ngIf=" getControl(el[uniqueKey])?.hasError('required') && getControl(el[uniqueKey])?.touched">
+                                {{el.errorMessages.requiredMessage}}
                             </span>
                             <span
-                                *ngIf="group.get(el[uniqueKey])?.hasError('invalidDate') && group.get(el[uniqueKey])?.touched">
-                                {{el.errorMasseges.validDateMessage}}
+                                *ngIf=" getControl(el[uniqueKey])?.hasError('invalidDate') && getControl(el[uniqueKey])?.touched && getControl('mainFormGroup.el[uniqueKey]')?.value">
+                                {{el.errorMessages.validDateMessage}}
                             </span>
                         </p>
                     </div>
@@ -99,7 +33,7 @@
                         <label class="form-check-label ms-2" for="{{el.name}}"> {{el.value}} </label>
                         <p class="help-block my-3">
                             <span *ngIf="  !getControl(el[uniqueKey])?.value && getControl(el[uniqueKey])?.touched">
-                                {{el.errorMasseges.requiredMassege}}
+                                {{el.errorMessages.requiredMessage}}
                             </span>
                         </p>
                     </div>
@@ -116,7 +50,79 @@
 
 
 
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    <button class="btn  btn-warning mx-4">
+                        <i class="bi bi-plus"></i>
+                    </button>
+
+                </div>
+
+                <span class="text-danger"
+                    *ngIf="inputControlForm.controls.mainFormGroup.status =='INVALID' && isSubmitted">
+                    *Enter Valid Data!
+                </span>
+
+
+                <!-- <span class="help-block text-danger"
+                 *ngIf="inputControlForm.hasError('inappropriateDate')">
+                    {{controlOptions.errorMessages.endAndJoinDateMessage}}</span> -->
+
+                    
+            </div>
+        </div>
+
+
+        <div formArrayName="controlsArray">
+            <div class="row justify-content-center align-items-center "
+                *ngFor="let group of getControlsArr.controls; let i=index; ">
+                <div class="col-md-2" *ngFor="let el of controls" [ngSwitch]="el[typeIdentifier]" [formGroupName]="i">
+                    <div class="mb-3 d-flex flex-column" *ngSwitchCase="'text'">
+                        <label for="{{el.name}}" class="form-label ">{{el.label}}</label>
+                        <input [type]="el.type" class="form-control" id="{{el.name}}" [formControlName]="el.name">
+
+                        <p class="help-block my-3">
+                            <span
+                                *ngIf="group.get(el[uniqueKey])?.hasError('minlength') && group.get(el[uniqueKey])?.touched ">
+                                {{el.errorMessages.minLengthMessage}}
+                            </span>
+
+                            <span
+                                *ngIf=" group.get(el[uniqueKey])?.hasError('required') && group.get(el[uniqueKey])?.touched">
+                                {{el.errorMessages.requiredMessage}}
+                            </span>
+                            <span
+                                *ngIf="group.get(el[uniqueKey])?.hasError('invalidDate') && group.get(el[uniqueKey])?.touched">
+                                {{el.errorMessages.validDateMessage}}
+                            </span>
+                        </p>
+                    </div>
+
+
+
+                    <div class="mb-3  " *ngSwitchCase="'checkbox'">
+                        <input class="form-check-input" type="checkbox" [value]="el.value" id="{{el.name}}"
+                            [formControlName]="el.name" />
+                        <label class="form-check-label ms-2" for="{{el.name}}"> {{el.value}} </label>
+                        <p class="help-block my-3">
+                            <span *ngIf="  !getControl(el[uniqueKey])?.value && getControl(el[uniqueKey])?.touched">
+                                {{el.errorMessages.requiredMessage}}
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="mb-3" *ngSwitchCase="'select'">
+                        <label class="form-check-label ms-2" for="{{el.name}}"> {{el.label}} </label>
+                        <select class="form-select" [formControlName]="el.name">
+                            <option *ngFor="let value of el.values" [value]="value">{{ value }}</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="col-md-2">
                     <button class="btn  btn-warning mx-4">
                         <i class="bi bi-plus"></i>
                     </button>
@@ -126,7 +132,7 @@
                 </div>
 
 
-                <span class="text-danger" *ngIf="isSubmitted">
+                <span class="text-danger" *ngIf="group.invalid && isSubmitted">
                     *Enter Valid Data!
                 </span>
             </div>

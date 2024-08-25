@@ -1,7 +1,9 @@
 export interface Ioptions {
     typeIdentifier: any,
     inputsArray: any[],
-    maxNunmberOfControls?: number,
+    maxNumberOfControls?: number,
     uniqueKey?:keyof any
+    formGroupValidators?:any,
+    errorMessages?:any
 
 }

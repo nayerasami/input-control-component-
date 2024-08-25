@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { Ioptions } from './Models/options';
-import {CustomValidator} from '../../src/app/validators/customValidators'
+import { CustomValidator } from '../../src/app/validators/customValidators'
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -20,12 +20,12 @@ export class AppComponent {
         Validators.minLength(4),
         Validators.required
       ],
-      errorMasseges:{
-        requiredMassege:'Enter Valid Company name',
-        minLengthMassege :'company name must be at least 4'
+      errorMessages: {
+        requiredMessage: 'Enter Valid Company name',
+        minLengthMessage: 'company name must be at least 4'
       }
     },
-    {  
+    {
 
       type: 'date',
       label: 'Join Date',
@@ -34,34 +34,53 @@ export class AppComponent {
       validators: [
         Validators.required,
         CustomValidator.checkDateValidity
-      ] ,
-      errorMasseges:{
-        requiredMessage:'Enter Valid date',
-        validDateMessage:'The date must be in the past'
+      ],
+      errorMessages: {
+        requiredMessage: 'Enter Valid join date',
+        validDateMessage: 'The date must be in the past'
 
       }
-    },{
+    },
+    {
+      type: 'date',
+      label: 'End Date',
+      name: 'endDate',
+      inputType: 'text',
+      validators: [
+        CustomValidator.checkDateValidity
+
+      ],
+      errorMessages: {
+        validDateMessage: 'The date must be in the past'
+
+      }
+    }, {
       type: 'checkbox',
-      label: 'experiance',
-      name: 'experiance',
+      label: 'experience',
+      name: 'experience',
       inputType: 'checkbox',
       value: 'currently working',
       validators: [
-        Validators.required
+
       ],
-      errorMasseges:{
-        requiredMassege:'you must check the work status',
+      errorMessages: {
+      
       }
     },
   ]
 
 
   options: Ioptions = {
-    typeIdentifier:'inputType' ,
-    uniqueKey:'name',
+    typeIdentifier: 'inputType',
+    uniqueKey: 'name',
     inputsArray: this.inputsAttributes,
-    maxNunmberOfControls: 10
-
+    maxNumberOfControls: 5,
+    formGroupValidators:[
+      CustomValidator.prototype.checkEndDateAndJoinDate()
+    ],
+    errorMessages:{
+      endAndJoinDateMessage:'End date is set before the start date'
+    }
   }
 
 
