@@ -1,9 +1,22 @@
 export interface Ioptions {
-    typeIdentifier: any,
-    inputsArray: any[],
+    inputsArray: IinputAttributes[],
     maxNumberOfControls?: number,
-    uniqueKey?:keyof any
     formGroupValidators?:any,
-    errorMessages?:any
+    errorMessages?:any,
+    handleGroupValuesChange?:any
+
+}
+
+export interface IinputAttributes{
+
+   
+        type:string,
+        label: string,
+        name:  string,
+        inputType: string,
+        value?:string,
+        validators?: any[],
+        errorMessages?: {}
+      
 
 }
