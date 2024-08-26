@@ -44,7 +44,7 @@ export class AppComponent {
     {
       type: 'date',
       label: 'End Date',
-      name: 'endDate',
+      name: 'finishDate',
       inputType: 'text',
       validators: [
         CustomValidator.checkDateValidity
@@ -76,10 +76,13 @@ export class AppComponent {
     inputsArray: this.inputsAttributes,
     maxNumberOfControls: 5,
     formGroupValidators:[
-      CustomValidator.prototype.checkEndDateAndJoinDate()
+      CustomValidator.prototype.checkEndDateAndJoinDate(),
+      CustomValidator.prototype.checkWorkingStatus()
+
     ],
     errorMessages:{
-      endAndJoinDateMessage:'End date is set before the start date'
+      endAndJoinDateMessage:'End date is set before the start date',
+      requiredEndDateMessage:'You must enter the job status'
     }
   }
 

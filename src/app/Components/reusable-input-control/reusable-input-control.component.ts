@@ -17,6 +17,7 @@ export class ReusableInputControlComponent implements OnInit {
   formControls: any;
   maxAddedControls: any;
 
+  disableAddBtn: boolean = false;
 
 
   ngOnInit(): void {
@@ -27,13 +28,24 @@ export class ReusableInputControlComponent implements OnInit {
     this.uniqueKey = this.controlOptions.uniqueKey || 'name'
 
 
+    this.maxAddedControls = this.controlOptions.maxNumberOfControls;
+    console.log(this.maxAddedControls, "max numbers")
+
+
+
     this.inputControlForm = new FormGroup({
       mainFormGroup: new FormGroup(this.createNewFormGroup()),
       controlsArray: new FormArray([])
     })
+
+
+    if (this.controlOptions.formGroupValidators) {
+      this.inputControlForm.get('mainFormGroup').setValidators(this.controlOptions.formGroupValidators);
+      console.log("cross field validators", this.inputControlForm.get('mainFormGroup'))
+    }
+
     this.handleExperienceStatus()
 
-//console.log("nono223" , this.getControl('mainFormGroup.el[uniqueKey]')?.hasError('minlength') && getControl('mainFormGroup.el[uniqueKey]')?.touched )
   }
 
 
@@ -41,7 +53,7 @@ export class ReusableInputControlComponent implements OnInit {
     const formGroup: any = {}
     this.controls.forEach((control: any) => {
       formGroup[control[this.uniqueKey]] = new FormControl('', control.validators || [])
-    },{Validators:this.controlOptions.formGroupValidators});
+    });
 
     return formGroup
 
@@ -55,16 +67,15 @@ export class ReusableInputControlComponent implements OnInit {
   getControl(controlName: string): AbstractControl | null {
     return this.inputControlForm.get(`mainFormGroup.${controlName}`);
   }
-  
+
 
 
   onSubmit() {
     console.log(this.inputControlForm, "form inputs")
-    if (this.inputControlForm.valid) {
+    if (this.inputControlForm.status == 'VALID') {
       console.log('Form Submitted!', this.inputControlForm);
       this.isSubmitted = false;
       this.addNewControl()
-
     } else {
       this.isSubmitted = true
     }
@@ -75,8 +86,16 @@ export class ReusableInputControlComponent implements OnInit {
 
   addNewControl() {
     const newFormGroup = new FormGroup(this.createNewFormGroup())
+    if (this.controlOptions.formGroupValidators) {
+      newFormGroup.setValidators(this.controlOptions.formGroupValidators)
+    }
     this.getControlsArr.push(newFormGroup)
-    console.log(this.getControlsArr, 'getControlsArr')
+
+    if (this.inputControlForm.get('controlsArray').controls.length == this.maxAddedControls) {
+      this.disableAddBtn = true
+    }
+    console.log(this.getControlsArr.controls, 'getControlsArr')
+
   }
 
 
