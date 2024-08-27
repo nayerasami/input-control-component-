@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { Ioptions } from './Models/options';
+import { IinputAttributes, Ioptions } from './Models/options';
 import { CustomValidator } from '../../src/app/validators/customValidators'
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { CustomValidator } from '../../src/app/validators/customValidators'
 export class AppComponent {
   title = 'multi-input-control';
 
-  inputsAttributes: any = [
+  inputsAttributes: IinputAttributes[] = [
     {
       type: 'text',
       label: 'Company Name',
@@ -21,8 +21,8 @@ export class AppComponent {
         Validators.required
       ],
       errorMessages: {
-        requiredMessage: 'Enter Valid Company name',
-        minLengthMessage: 'company name must be at least 4'
+        required: 'Enter Valid Company name',
+        minlength: 'company name must be at least 4'
       }
     },
     {
@@ -37,21 +37,21 @@ export class AppComponent {
       ],
       errorMessages: {
         requiredMessage: 'Enter Valid join date',
-        validDateMessage: 'The date must be in the past'
+        invalidDate: 'The date must be in the past'
 
       }
     },
     {
       type: 'date',
       label: 'End Date',
-      name: 'finishDate',
+      name: 'endDate',
       inputType: 'text',
       validators: [
         CustomValidator.checkDateValidity
 
       ],
       errorMessages: {
-        validDateMessage: 'The date must be in the past'
+        invalidDate: 'The date must be in the past'
 
       }
     }, {
@@ -64,29 +64,63 @@ export class AppComponent {
 
       ],
       errorMessages: {
-      
+
       }
     },
   ]
 
 
   options: Ioptions = {
-    typeIdentifier: 'inputType',
-    uniqueKey: 'name',
+
     inputsArray: this.inputsAttributes,
     maxNumberOfControls: 5,
-    formGroupValidators:[
-      CustomValidator.prototype.checkEndDateAndJoinDate(),
-      CustomValidator.prototype.checkWorkingStatus()
-
+    formGroupValidators: [
+      CustomValidator.checkEndDateAndJoinDate(),
+      CustomValidator.checkWorkingStatus()
     ],
-    errorMessages:{
-      endAndJoinDateMessage:'End date is set before the start date',
-      requiredEndDateMessage:'You must enter the job status'
-    }
+    errorMessages: {
+      inappropriateDate: 'End date is set before the start date',
+      requiredEndDate: 'You must enter the job status'
+    },
+    handleGroupValuesChange: this.handleGroupValuesChange
+
+
   }
 
 
+  handleGroupValuesChange(group: any) {
+    const currentlyWorkingControl = group?.get('experience');
+    const endDateControl = group?.get('endDate');
+
+
+    if (currentlyWorkingControl.value) {
+      endDateControl.disable({ emitEvent: false });
+    } else if (endDateControl.value) {
+      currentlyWorkingControl.disable({ emitEvent: false });
+    }
+
+    
+    currentlyWorkingControl?.valueChanges.subscribe((value: any) => {
+      console.log("check value", value);
+      if (value) {
+        endDateControl?.disable({ emitEvent: false });
+      } else {
+        endDateControl?.enable({ emitEvent: false });
+      }
+    });
+
+    endDateControl?.valueChanges.subscribe((value: any) => {
+      if (value) {
+        currentlyWorkingControl?.disable({ emitEvent: false });
+      } else {
+        currentlyWorkingControl?.enable({ emitEvent: false });
+      }
+      console.log("endDateControl value", value);
+    });
+
+
+   
+  }
 
 
 
