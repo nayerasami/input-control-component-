@@ -21,8 +21,8 @@ export class AppComponent {
         Validators.required
       ],
       errorMessages: {
-        requiredMessage: 'Enter Valid Company name',
-        minLengthMessage: 'company name must be at least 4'
+        required: 'Enter Valid Company name',
+        minlength: 'company name must be at least 4'
       }
     },
     {
@@ -37,7 +37,7 @@ export class AppComponent {
       ],
       errorMessages: {
         requiredMessage: 'Enter Valid join date',
-        validDateMessage: 'The date must be in the past'
+        invalidDate: 'The date must be in the past'
 
       }
     },
@@ -51,7 +51,7 @@ export class AppComponent {
 
       ],
       errorMessages: {
-        validDateMessage: 'The date must be in the past'
+        invalidDate: 'The date must be in the past'
 
       }
     }, {
@@ -75,12 +75,12 @@ export class AppComponent {
     inputsArray: this.inputsAttributes,
     maxNumberOfControls: 5,
     formGroupValidators: [
-      CustomValidator.prototype.checkEndDateAndJoinDate(),
-      CustomValidator.prototype.checkWorkingStatus()
+      CustomValidator.checkEndDateAndJoinDate(),
+      CustomValidator.checkWorkingStatus()
     ],
     errorMessages: {
-      endAndJoinDateMessage: 'End date is set before the start date',
-      requiredEndDateMessage: 'You must enter the job status'
+      inappropriateDate: 'End date is set before the start date',
+      requiredEndDate: 'You must enter the job status'
     },
     handleGroupValuesChange: this.handleGroupValuesChange
 
@@ -92,9 +92,16 @@ export class AppComponent {
     const currentlyWorkingControl = group?.get('experience');
     const endDateControl = group?.get('endDate');
 
+
+    if (currentlyWorkingControl.value) {
+      endDateControl.disable({ emitEvent: false });
+    } else if (endDateControl.value) {
+      currentlyWorkingControl.disable({ emitEvent: false });
+    }
+
+    
     currentlyWorkingControl?.valueChanges.subscribe((value: any) => {
       console.log("check value", value);
-
       if (value) {
         endDateControl?.disable({ emitEvent: false });
       } else {
@@ -112,11 +119,7 @@ export class AppComponent {
     });
 
 
-    if (currentlyWorkingControl.value) {
-      endDateControl.disable({ emitEvent: false });
-    } else if (endDateControl.value) {
-      currentlyWorkingControl.disable({ emitEvent: false });
-    }
+   
   }
 
 

@@ -19,35 +19,9 @@
                 id="{{ el.name }}"
                 [formControlName]="el.name"
               />
+
   
-             <p class="help-block my-3">
-                <span
-                  *ngIf="
-                    group.get(el.name)?.hasError('minlength') &&
-                    group.get(el.name)?.touched
-                  "
-                >
-                  {{ el.errorMessages.minLengthMessage }}
-                </span>
-  
-                <span
-                  *ngIf="
-                    group.get(el.name)?.hasError('required') &&
-                    group.get(el.name)?.touched
-                  "
-                >
-                  {{ el.errorMessages.requiredMessage }}
-                </span>
-                <span
-                  *ngIf="
-                    group.get(el.name)?.hasError('invalidDate') &&
-                    group.get(el.name)?.touched
-                    && group.get(el.name)?.value
-                  "
-                >
-                  {{ el.errorMessages.validDateMessage }}
-                </span>
-              </p> 
+              <app-shared-error [control]="group.get(el.name)" [errorMessages]="el.errorMessages" ></app-shared-error>
             </div>
   
             <div class="mb-3" *ngSwitchCase="'checkbox'">
@@ -61,16 +35,7 @@
               <label class="form-check-label ms-2" for="{{ el.name }}">
                 {{ el.value }}
               </label>
-              <p class="help-block my-3">
-                <span
-                  *ngIf="
-                    !group.get(el.name)?.value &&
-                    group.get(el.name)?.touched
-                  "
-                >
-                  {{ el.errorMessages.requiredMessage }}
-                </span>
-              </p> 
+            
             </div>
   
             <div class="mb-3" *ngSwitchCase="'select'">
@@ -83,6 +48,8 @@
                 </option>
               </select>
             </div>
+
+
           </div>
   
           <div class="col-md-2">
@@ -103,19 +70,9 @@
             *Enter Valid Data!
           </span>
           <br />
-          <span
-            class="help-block text-danger"
-            *ngIf="group?.hasError('inappropriateDate')"
-          >
-            {{ controlOptions.errorMessages.endAndJoinDateMessage }}
-          </span>
-          <br />
-          <span
-            class="help-block text-danger"
-            *ngIf="group?.hasError('requiredEndDate')"
-          >
-            {{ controlOptions.errorMessages.requiredEndDateMessage }}
-          </span> 
+       
+          <app-shared-error [control]="group" [errorMessages]=" controlOptions.errorMessages"></app-shared-error>
+          
         </div>
       </div>
   </form>

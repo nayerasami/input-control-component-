@@ -26,7 +26,6 @@ export class ReusableInputControlComponent implements OnInit {
     console.log(this.maxAddedControls, "max numbers")
 
 
-
     this.inputControlForm = new FormGroup({
       controlsArray: new FormArray([])
     })
@@ -55,15 +54,10 @@ export class ReusableInputControlComponent implements OnInit {
 
 
 
-  // getControl(controlName: string): AbstractControl | null {
-  //   return this.inputControlForm.get(`mainFormGroup.${controlName}`);
-  // }
-
 
 
   onSubmit() {
     console.log(this.inputControlForm, "form ")
-
     if (this.inputControlForm.status == 'VALID') {
 
       console.log('Form Submitted!', this.inputControlForm);

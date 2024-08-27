@@ -4,11 +4,13 @@ import {ReactiveFormsModule } from '@angular/forms';  // Import FormsModule
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ReusableInputControlComponent } from './Components/reusable-input-control/reusable-input-control.component';
+import { SharedErrorComponent } from './Components/shared-error/shared-error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReusableInputControlComponent
+    ReusableInputControlComponent,
+    SharedErrorComponent
   ],
   imports: [
     BrowserModule,

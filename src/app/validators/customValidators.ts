@@ -14,7 +14,7 @@ export class CustomValidator {
 
  
 
-    checkEndDateAndJoinDate(): ValidatorFn {
+    static checkEndDateAndJoinDate(): ValidatorFn {
         return (group: AbstractControl): ValidationErrors | null => {
             const joinDate = group.get('joinDate')?.value
             const endDate = group.get('endDate')?.value
@@ -40,7 +40,7 @@ export class CustomValidator {
     }
 
 
-    checkWorkingStatus(): ValidatorFn {
+   static checkWorkingStatus(): ValidatorFn {
         return (group: AbstractControl): ValidationErrors | null => {
             const experienceControl = group.get('experience');
             const endDateControl = group.get('endDate');
