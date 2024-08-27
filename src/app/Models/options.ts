@@ -5,7 +5,8 @@ export interface Ioptions {
     errorMessages?:any,
     formArrayValidators:any,
     formArrayErrors:any ,
-    handleExperienceStatus?:any
+    defaultControlValues?:any      
+
 }
 
 export interface IinputAttributes{

@@ -71,11 +71,30 @@ export class AppComponent implements OnInit, AfterViewInit {
     },
   ]
 
+  defaultValues: {} = [
+ {
+    "companyName": "company1",
+    "joinDate": "2022-08-20",
+    "endDate": "2023-09-27",
+   
+
+  },{
+    "companyName": "company3",
+    "joinDate": "2000-08-20",
+    "endDate": "2019-09-27",
+    
+  }, {
+    "companyName": "company2",
+    "joinDate": "2004-08-01",
+    "endDate": "2020-09-27",
+
+  },
+  ]
+
 
   options: Ioptions = {
 
     inputsArray: this.inputsAttributes,
-    maxNumberOfControls: 5,
     formGroupValidators: [
       CustomValidator.checkEndDateAndJoinDate(),
       CustomValidator.checkWorkingStatus()
@@ -88,6 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     formArrayErrors: {
       formArrayLength: "you can't add more "
     },
+    defaultControlValues: this.defaultValues
 
   }
 
@@ -103,6 +123,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
   }
+
 
 
   handleGroupValuesChange(group: any) {
@@ -137,7 +158,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   }
 
-  handleExperienceStatus() {  
+  handleExperienceStatus() {
     if (this.inputControlFormArray) {
       this.inputControlFormArray.valueChanges.subscribe(() => {
         this.inputControlFormArray.controls.forEach((controlGroup: any) => {
@@ -153,6 +174,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   }
 
+  submit() {
+    this.formInputControlRef.submit()
+  }
+  reset() {
+
+    this.formInputControlRef.reset()
+  }
 
 
 

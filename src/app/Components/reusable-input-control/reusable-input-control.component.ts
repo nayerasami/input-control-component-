@@ -10,31 +10,52 @@ export class ReusableInputControlComponent implements OnInit {
 
   @Input() controlOptions: any;
   controls: any[] = []
-  inputControlForm: any;
+  inputControlForm!: FormGroup;
   isSubmitted: boolean = false;
   formControls: any;
   maxAddedControls: any;
   controlsArr: any;
-  disableAddBtn: boolean = false;
-
+  defaultValues: any;
 
   ngOnInit(): void {
     console.log(this.controlOptions)
     this.controls = this.controlOptions.inputsArray
     console.log(this.controls)
-    this.maxAddedControls = this.controlOptions.maxNumberOfControls;
-    console.log(this.maxAddedControls, "max numbers")
 
+    this.defaultValues = this.controlOptions.defaultControlValues
 
-
+    console.log(this.defaultValues, "defaultValues")
     this.inputControlForm = new FormGroup({
       controlsArray: new FormArray([], this.controlOptions.formArrayValidators)
     })
 
-
     this.addNewControl()
+    while (this.defaultValues.length > this.getControlsArr.controls.length) {
+      this.addNewControl()
+      console.log(this.getControlsArr.controls)
+      this.controlPatchValues()
+    }
+   
   }
 
+
+  controlPatchValues() {
+    const controls =this.getControlsArr.controls
+    this.defaultValues.forEach((value: any,index:number) => {
+      if(controls[index]){
+        console.log(value ,"single defualt value ")
+        controls[index].patchValue(value)
+
+      }
+    })
+
+    console.log(this.getControlsArr.controls, "controlPatchValues")
+
+  }
+
+  reset() {
+    this.inputControlForm.reset()
+  }
 
   createNewFormGroup() {
     const formGroup: any = {}
@@ -54,7 +75,7 @@ export class ReusableInputControlComponent implements OnInit {
 
 
   addControl() {
-    console.log(this.inputControlForm, "form ")
+    console.log(this.inputControlForm, "form submittt")
 
     if (this.inputControlForm.status == 'VALID') {
 
@@ -74,18 +95,15 @@ export class ReusableInputControlComponent implements OnInit {
       newFormGroup.setValidators(this.controlOptions.formGroupValidators)
     }
     this.getControlsArr.push(newFormGroup)
-
-    if (this.inputControlForm.get('controlsArray').controls.length == this.maxAddedControls) {
-      this.disableAddBtn = true
-    }
     console.log(this.getControlsArr.controls, 'getControlsArr')
-
   }
 
 
 
 
-
+  submit() {
+    console.log(this.inputControlForm.value, "submitted ")
+  }
 
   deleteControl(index: any) {
     this.getControlsArr.removeAt(index)

@@ -68,7 +68,7 @@ export class CustomValidator {
 
         if (control instanceof FormArray) {
             const controls = control.controls
-            if (controls.length >= 3) {
+            if (controls.length >= 4) {
                 return { formArrayLength: true };
 
             }

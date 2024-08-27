@@ -13,11 +13,17 @@
           <div class="mb-3 d-flex flex-column" *ngSwitchCase="'text'">
             <label for="{{ el.name }}" class="form-label">{{ el.label }}</label>
             <input
+            
               [type]="el.type"
               class="form-control"
               id="{{ el.name }}"
               [formControlName]="el.name"
             />
+
+            <!-- {{el.errors | json}} -->
+            <!-- <ng-container *ngFor="let err of group.get(el.name)?.errors | keyvalue">
+              <p>{{el.errorMessages[err.key]}}</p>
+            </ng-container> -->
 
             <app-shared-error
               [control]="group.get(el.name)"
@@ -80,11 +86,12 @@
 
 
       <app-shared-error
-        *ngIf="isSubmitted"
+        *ngIf="isSubmitted  "
         [control]="getControlsArr"
         [errorMessages]="controlOptions.formArrayErrors"
       ></app-shared-error>
 
     </div>
+
   </form>
 
