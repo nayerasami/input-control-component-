@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
-import { Validators } from '@angular/forms';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormGroup, Validators } from '@angular/forms';
 import { IinputAttributes, Ioptions } from './Models/options';
 import { CustomValidator } from '../../src/app/validators/customValidators'
+import { ReusableInputControlComponent } from './Components/reusable-input-control/reusable-input-control.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'multi-input-control';
-
+  @ViewChild('formInputControl') formInputControlRef !: ReusableInputControlComponent;
+  inputControlFormArray: any;
   inputsAttributes: IinputAttributes[] = [
     {
       type: 'text',
@@ -82,7 +84,22 @@ export class AppComponent {
       inappropriateDate: 'End date is set before the start date',
       requiredEndDate: 'You must enter the job status'
     },
-    handleGroupValuesChange: this.handleGroupValuesChange
+    formArrayValidators: [CustomValidator.checkArrayMaxLength],
+    formArrayErrors: {
+      formArrayLength: "you can't add more "
+    },
+
+  }
+
+  ngOnInit(): void {
+  }
+
+
+  ngAfterViewInit(): void {
+    const controlsArray = this.formInputControlRef.inputControlForm.get('controlsArray') as FormArray;
+    this.inputControlFormArray = controlsArray;
+    console.log('Form Array', this.inputControlFormArray);
+    this.handleExperienceStatus();
 
 
   }
@@ -91,17 +108,15 @@ export class AppComponent {
   handleGroupValuesChange(group: any) {
     const currentlyWorkingControl = group?.get('experience');
     const endDateControl = group?.get('endDate');
-
-
     if (currentlyWorkingControl.value) {
       endDateControl.disable({ emitEvent: false });
     } else if (endDateControl.value) {
       currentlyWorkingControl.disable({ emitEvent: false });
     }
 
-    
     currentlyWorkingControl?.valueChanges.subscribe((value: any) => {
       console.log("check value", value);
+
       if (value) {
         endDateControl?.disable({ emitEvent: false });
       } else {
@@ -119,10 +134,24 @@ export class AppComponent {
     });
 
 
-   
+
   }
 
+  handleExperienceStatus() {  
+    if (this.inputControlFormArray) {
+      this.inputControlFormArray.valueChanges.subscribe(() => {
+        this.inputControlFormArray.controls.forEach((controlGroup: any) => {
+          if (controlGroup instanceof FormGroup) {
+            this.handleGroupValuesChange(controlGroup);
 
+          }
+        });
+      })
+    } else {
+      console.log('no from array')
+    }
+
+  }
 
 
 

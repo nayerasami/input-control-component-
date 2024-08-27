@@ -1,5 +1,27 @@
 <p class="help-block my-3">
-  <span *ngIf="control && control.hasError('required') && control.touched">
+
+
+  <ng-container *ngFor="let error of getErrorKeys()">
+    <span  *ngIf="control && control.hasError(error) && control.touched && (error !== 'invalidDate' || control.value) " >
+      {{ getErrorMessages(error) }}
+    </span>
+  </ng-container>
+
+  <!-- <span
+    *ngIf="
+      control &&
+      control.hasError('invalidDate') &&
+      control.touched &&
+      control.value
+    "
+  >
+    <ng-container *ngFor="let error of getErrorKeys()">
+      {{ getErrorMessages(error) }}
+    </ng-container>
+    
+  </span> -->
+
+  <!-- <span *ngIf="control && control.hasError('required') && control.touched">
     <ng-container *ngFor="let error of getErrorKeys()">
       {{ getErrorMessages(error) }}
     </ng-container>
@@ -44,6 +66,6 @@
   <ng-container *ngFor="let error of getErrorKeys()">
     {{ getErrorMessages(error) }}
   </ng-container>
-</span>
+</span> -->
 
 </p>

@@ -26,14 +26,13 @@ export class ReusableInputControlComponent implements OnInit {
     console.log(this.maxAddedControls, "max numbers")
 
 
+
     this.inputControlForm = new FormGroup({
-      controlsArray: new FormArray([])
+      controlsArray: new FormArray([], this.controlOptions.formArrayValidators)
     })
 
 
     this.addNewControl()
-    this.handleExperienceStatus()
-
   }
 
 
@@ -54,10 +53,9 @@ export class ReusableInputControlComponent implements OnInit {
 
 
 
-
-
-  onSubmit() {
+  addControl() {
     console.log(this.inputControlForm, "form ")
+
     if (this.inputControlForm.status == 'VALID') {
 
       console.log('Form Submitted!', this.inputControlForm);
@@ -95,16 +93,16 @@ export class ReusableInputControlComponent implements OnInit {
 
 
 
-  handleExperienceStatus() {
-    const formArray = this.inputControlForm.get('controlsArray') as FormArray;
-    formArray.valueChanges.subscribe(() => {
-      formArray.controls.forEach((controlGroup: any) => {
-        this.controlOptions.handleGroupValuesChange(controlGroup);
+  // handleExperienceStatus() {
+  //   const formArray = this.inputControlForm.get('controlsArray') as FormArray;
+  //   formArray.valueChanges.subscribe(() => {
+  //     formArray.controls.forEach((controlGroup: any) => {
+  //       this.controlOptions.handleGroupValuesChange(controlGroup);
 
-      });
-    })
+  //     });
+  //   })
 
-  }
+  // }
 
 
 
