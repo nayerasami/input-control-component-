@@ -72,23 +72,22 @@ export class AppComponent implements OnInit, AfterViewInit {
   ]
 
   defaultValues: {} = [
- {
-    "companyName": "company1",
-    "joinDate": "2022-08-20",
-    "endDate": "2023-09-27",
-   
+    {
+      "companyName": "company1",
+      "joinDate": "2022-08-20",
 
-  },{
-    "companyName": "company3",
-    "joinDate": "2000-08-20",
-    "endDate": "2019-09-27",
-    
-  }, {
-    "companyName": "company2",
-    "joinDate": "2004-08-01",
-    "endDate": "2020-09-27",
+      "experience": "true"
 
-  },
+    }, {
+      "companyName": "company3",
+      "joinDate": "2000-08-20",
+      "endDate": "2019-09-27",
+
+    }, {
+      "companyName": "company2",
+      "joinDate": "2004-08-01",
+      "endDate": "2020-09-27",
+    },
   ]
 
 
@@ -166,6 +165,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.handleGroupValuesChange(controlGroup);
 
           }
+       
         });
       })
     } else {

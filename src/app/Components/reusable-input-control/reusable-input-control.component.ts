@@ -46,6 +46,10 @@ export class ReusableInputControlComponent implements OnInit {
         console.log(value ,"single defualt value ")
         controls[index].patchValue(value)
 
+
+        if( value.experience ==='true' && controls[index].get('endDate')){
+          controls[index].get('endDate')?.setValue(null);
+        }
       }
     })
 
