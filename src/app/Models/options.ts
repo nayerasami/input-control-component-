@@ -3,13 +3,15 @@ export interface Ioptions {
     maxNumberOfControls?: number,
     formGroupValidators?:any,
     errorMessages?:any,
-    handleGroupValuesChange?:any
+    formArrayValidators:any,
+    formArrayErrors:any ,
+    defaultControlValues?:any    ,
+    updatedDataValues?:any  
 
 }
 
 export interface IinputAttributes{
 
-   
         type:string,
         label: string,
         name:  string,
