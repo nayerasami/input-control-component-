@@ -5,7 +5,8 @@ export interface Ioptions {
     errorMessages?:any,
     formArrayValidators:any,
     formArrayErrors:any ,
-    defaultControlValues?:any      
+    defaultControlValues?:any    ,
+    updatedDataValues?:any  
 
 }
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormGroup, Validators } from '@angular/forms';
 import { IinputAttributes, Ioptions } from './Models/options';
 import { CustomValidator } from '../../src/app/validators/customValidators'
@@ -6,12 +6,16 @@ import { ReusableInputControlComponent } from './Components/reusable-input-contr
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'multi-input-control';
   @ViewChild('formInputControl') formInputControlRef !: ReusableInputControlComponent;
   inputControlFormArray: any;
+  constructor(private cdr: ChangeDetectorRef) { }
+
+
   inputsAttributes: IinputAttributes[] = [
     {
       type: 'text',
@@ -71,12 +75,32 @@ export class AppComponent implements OnInit, AfterViewInit {
     },
   ]
 
-  defaultValues: {} = [
+  // defaultValues: {} = [
+  //   {
+  //     "companyName": "company1",
+  //     "joinDate": "2022-08-20",
+  //     "endDate": null,
+  //     "experience": true
+
+  //   }, {
+  //     "companyName": "company3",
+  //     "joinDate": "2000-08-20",
+  //     "endDate": "2019-09-27",
+
+  //   }, {
+  //     "companyName": "company2",
+  //     "joinDate": "2004-08-01",
+  //     "endDate": "2020-09-27",
+  //   },
+  // ]
+
+
+  updatedData: {} = [
     {
       "companyName": "company1",
       "joinDate": "2022-08-20",
-
-      "experience": "true"
+      "endDate": null,
+      "experience": true
 
     }, {
       "companyName": "company3",
@@ -87,9 +111,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       "companyName": "company2",
       "joinDate": "2004-08-01",
       "endDate": "2020-09-27",
-    },
+    }
   ]
-
 
   options: Ioptions = {
 
@@ -106,11 +129,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     formArrayErrors: {
       formArrayLength: "you can't add more "
     },
-    defaultControlValues: this.defaultValues
+    //defaultControlValues: this.defaultValues,
+    updatedDataValues: this.updatedData
 
   }
 
   ngOnInit(): void {
+
   }
 
 
@@ -118,6 +143,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     const controlsArray = this.formInputControlRef.inputControlForm.get('controlsArray') as FormArray;
     this.inputControlFormArray = controlsArray;
     console.log('Form Array', this.inputControlFormArray);
+
+
+    if (this.inputControlFormArray.controls.length > 1) {
+      this.inputControlFormArray.controls.forEach((formGroupControl: any) => {
+        if (formGroupControl instanceof FormGroup) {
+          this.handleGroupValuesChange(formGroupControl)
+        }
+      })
+
+      this.cdr.detectChanges();
+    }
+
+
+
     this.handleExperienceStatus();
 
 
@@ -133,6 +172,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (endDateControl.value) {
       currentlyWorkingControl.disable({ emitEvent: false });
     }
+
 
     currentlyWorkingControl?.valueChanges.subscribe((value: any) => {
       console.log("check value", value);
@@ -159,13 +199,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   handleExperienceStatus() {
     if (this.inputControlFormArray) {
+
+
       this.inputControlFormArray.valueChanges.subscribe(() => {
         this.inputControlFormArray.controls.forEach((controlGroup: any) => {
+
           if (controlGroup instanceof FormGroup) {
             this.handleGroupValuesChange(controlGroup);
-
           }
-       
         });
       })
     } else {
@@ -178,10 +219,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.formInputControlRef.submit()
   }
   reset() {
-
     this.formInputControlRef.reset()
   }
-
+  update() {
+    this.formInputControlRef.update()
+  }
 
 
 }

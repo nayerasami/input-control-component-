@@ -21,44 +21,40 @@ export class ReusableInputControlComponent implements OnInit {
     console.log(this.controlOptions)
     this.controls = this.controlOptions.inputsArray
     console.log(this.controls)
-
-    this.defaultValues = this.controlOptions.defaultControlValues
-
     console.log(this.defaultValues, "defaultValues")
     this.inputControlForm = new FormGroup({
       controlsArray: new FormArray([], this.controlOptions.formArrayValidators)
     })
 
-    this.addNewControl()
-    while (this.defaultValues.length > this.getControlsArr.controls.length) {
-      this.addNewControl()
-      console.log(this.getControlsArr.controls)
-      this.controlPatchValues()
-    }
-   
+    this.addNewControl();
+    this.setDefaultValues()
+
+
   }
 
 
-  controlPatchValues() {
-    const controls =this.getControlsArr.controls
-    this.defaultValues.forEach((value: any,index:number) => {
-      if(controls[index]){
-        console.log(value ,"single defualt value ")
-        controls[index].patchValue(value)
-
-
-        if( value.experience ==='true' && controls[index].get('endDate')){
-          controls[index].get('endDate')?.setValue(null);
-        }
+  setDefaultValues() {
+    this.defaultValues = this.controlOptions.defaultControlValues
+    if (this.defaultValues) {
+      while (this.defaultValues.length > this.getControlsArr.controls.length) {
+        this.addNewControl()
+        const controls = this.getControlsArr.controls
+        this.defaultValues.forEach((value: any, index: number) => {
+          if (controls[index]) {
+            controls[index].patchValue(value)
+          }
+        })
       }
-    })
-
-    console.log(this.getControlsArr.controls, "controlPatchValues")
-
+    }
   }
+
+
 
   reset() {
-    this.inputControlForm.reset()
+    while (this.getControlsArr.length > 1) {
+      this.deleteControl(1);
+    }
+    this.inputControlForm.reset();
   }
 
   createNewFormGroup() {
@@ -67,10 +63,9 @@ export class ReusableInputControlComponent implements OnInit {
       formGroup[control.name] = new FormControl('', control.validators || []);
 
     });
-
     return new FormGroup(formGroup)
-
   }
+
 
   get getControlsArr(): FormArray {
     return this.inputControlForm.get('controlsArray') as FormArray;
@@ -79,10 +74,7 @@ export class ReusableInputControlComponent implements OnInit {
 
 
   addControl() {
-    console.log(this.inputControlForm, "form submittt")
-
     if (this.inputControlForm.status == 'VALID') {
-
       console.log('Form Submitted!', this.inputControlForm);
       this.isSubmitted = false;
       this.addNewControl()
@@ -99,7 +91,6 @@ export class ReusableInputControlComponent implements OnInit {
       newFormGroup.setValidators(this.controlOptions.formGroupValidators)
     }
     this.getControlsArr.push(newFormGroup)
-    console.log(this.getControlsArr.controls, 'getControlsArr')
   }
 
 
@@ -113,6 +104,15 @@ export class ReusableInputControlComponent implements OnInit {
     this.getControlsArr.removeAt(index)
   }
 
+  update() {
+    if (this.controlOptions.updatedDataValues) {
+      this.controlOptions.updatedDataValues.forEach((el: any, index: number) => {
 
+        this.getControlsArr.controls[index].patchValue(el)
+
+      })
+    }
+
+  }
 
 }
