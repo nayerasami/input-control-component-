@@ -18,10 +18,7 @@ export class ReusableInputControlComponent implements OnInit {
   defaultValues: any;
 
   ngOnInit(): void {
-    console.log(this.controlOptions)
     this.controls = this.controlOptions.inputsArray
-    console.log(this.controls)
-    console.log(this.defaultValues, "defaultValues")
     this.inputControlForm = new FormGroup({
       controlsArray: new FormArray([], this.controlOptions.formArrayValidators)
     })
@@ -75,7 +72,6 @@ export class ReusableInputControlComponent implements OnInit {
 
   addControl() {
     if (this.inputControlForm.status == 'VALID') {
-      console.log('Form Submitted!', this.inputControlForm);
       this.isSubmitted = false;
       this.addNewControl()
     } else {
@@ -106,13 +102,16 @@ export class ReusableInputControlComponent implements OnInit {
 
   update() {
     if (this.controlOptions.updatedDataValues) {
+      while (this.controlOptions.updatedDataValues.length > this.getControlsArr.controls.length) {
+        this.addNewControl()
+
+      }
       this.controlOptions.updatedDataValues.forEach((el: any, index: number) => {
 
         this.getControlsArr.controls[index].patchValue(el)
 
       })
     }
-
   }
 
 }

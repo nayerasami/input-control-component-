@@ -142,8 +142,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     const controlsArray = this.formInputControlRef.inputControlForm.get('controlsArray') as FormArray;
     this.inputControlFormArray = controlsArray;
-    console.log('Form Array', this.inputControlFormArray);
-
 
     if (this.inputControlFormArray.controls.length > 1) {
       this.inputControlFormArray.controls.forEach((formGroupControl: any) => {
@@ -175,8 +173,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
     currentlyWorkingControl?.valueChanges.subscribe((value: any) => {
-      console.log("check value", value);
-
       if (value) {
         endDateControl?.disable({ emitEvent: false });
       } else {
@@ -190,7 +186,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       } else {
         currentlyWorkingControl?.enable({ emitEvent: false });
       }
-      console.log("endDateControl value", value);
     });
 
 
@@ -209,11 +204,9 @@ export class AppComponent implements OnInit, AfterViewInit {
           }
         });
       })
-    } else {
-      console.log('no from array')
     }
-
   }
+
 
   submit() {
     this.formInputControlRef.submit()

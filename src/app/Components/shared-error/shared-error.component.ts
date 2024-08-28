@@ -5,25 +5,18 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './shared-error.component.html',
   styleUrls: ['./shared-error.component.css']
 })
-export class SharedErrorComponent implements OnInit{
-@Input() errorMessages:any;
-@Input() control:any;
+export class SharedErrorComponent {
+  @Input() errorMessages: any;
+  @Input() control: any;
 
 
-ngOnInit(): void {
 
-console.log(this.errorMessages,"errorMessages")
-console.log(this.control,"controls")
+  getErrorKeys(): string[] {
+    return this.control ? Object.keys(this.control.errors || {}) : [];
+  }
 
-}
-
-getErrorKeys(): string[] {
-  return this.control ? Object.keys(this.control.errors || {}) : [];
-}
-
-getErrorMessages (errorKey:any) :string{
-  console.log(this.errorMessages[errorKey] )
-  return this.errorMessages[errorKey]  || ''
-}
+  getErrorMessages(errorKey: any): string {
+    return this.errorMessages[errorKey] || ''
+  }
 
 }
