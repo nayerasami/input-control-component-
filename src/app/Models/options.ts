@@ -13,6 +13,7 @@ export interface Ioptions {
 export interface IinputAttributes{
 
         type:string,
+        defaultValue?:any,
         label: string,
         name:  string,
         inputType: string,

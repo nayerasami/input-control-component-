@@ -19,7 +19,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   inputsAttributes: IinputAttributes[] = [
     {
       type: 'text',
+      label: 'id',
+      name: 'id',
+      inputType: 'text',
+    },
+    {
+      type: 'text',
       label: 'Company Name',
+      defaultValue:'first company',
       name: 'companyName',
       inputType: 'text',
       validators: [

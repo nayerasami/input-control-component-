@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormArray, AbstractControl, Validators } from '@angular/forms';
 
 @Component({
@@ -9,9 +9,10 @@ import { FormGroup, FormControl, FormArray, AbstractControl, Validators } from '
 export class ReusableInputControlComponent implements OnInit {
 
   @Input() controlOptions: any;
+  @Output() myEvent = new EventEmitter()
   controls: any[] = []
   inputControlForm!: FormGroup;
-  isSubmitted: boolean = false;
+  hasError: boolean = false;
   formControls: any;
   maxAddedControls: any;
   controlsArr: any;
@@ -57,7 +58,9 @@ export class ReusableInputControlComponent implements OnInit {
   createNewFormGroup() {
     const formGroup: any = {}
     this.controls.forEach((control: any) => {
-      formGroup[control.name] = new FormControl('', control.validators || []);
+
+      const controlDefaultValue = control.defaultValue?control.defaultValue :null
+      formGroup[control.name] = new FormControl(controlDefaultValue, control.validators || []);
 
     });
     return new FormGroup(formGroup)
@@ -72,10 +75,10 @@ export class ReusableInputControlComponent implements OnInit {
 
   addControl() {
     if (this.inputControlForm.status == 'VALID') {
-      this.isSubmitted = false;
+      this.hasError = false;
       this.addNewControl()
     } else {
-      this.isSubmitted = true
+      this.hasError = true
     }
 
   }
@@ -89,11 +92,31 @@ export class ReusableInputControlComponent implements OnInit {
     this.getControlsArr.push(newFormGroup)
   }
 
+  
+  setControlsValues(array: any) {
+    while (array.length > this.getControlsArr.controls.length) {
+      this.addNewControl()
+    }
+    array.forEach((el: any, index: number) => {
+      this.getControlsArr.controls[index].patchValue(el)
+
+    })
+  }
 
 
+  validate() {
+    console.log(this.inputControlForm.value, "submitted ")
+    if (this.inputControlForm.status == 'VALID') {
+      this.hasError = false;
+    } else {
+      this.hasError = true
+    }
+
+  }
 
   submit() {
     console.log(this.inputControlForm.value, "submitted ")
+    this.myEvent.emit(this.inputControlForm.value)
   }
 
   deleteControl(index: any) {
