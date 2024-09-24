@@ -15,6 +15,15 @@ export class AppComponent implements OnInit, AfterViewInit {
   inputControlFormArray: any;
   constructor(private cdr: ChangeDetectorRef) { }
 
+  experiences: any;
+
+  getExperiencesValues(e: any) {
+
+    this.experiences = e;
+    console.log(this.experiences, "experiences values")
+  }
+
+
 
   inputsAttributes: IinputAttributes[] = [
     {
@@ -26,7 +35,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     {
       type: 'text',
       label: 'Company Name',
-      defaultValue:'first company',
+      defaultValue: 'first company',
       name: 'companyName',
       inputType: 'text',
       validators: [

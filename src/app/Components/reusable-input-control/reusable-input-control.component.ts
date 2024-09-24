@@ -28,6 +28,11 @@ export class ReusableInputControlComponent implements OnInit {
     this.setDefaultValues()
 
 
+    this.inputControlForm.valueChanges.subscribe(value => {
+      this.myEvent.emit(value);
+    });
+
+
   }
 
 
@@ -45,7 +50,6 @@ export class ReusableInputControlComponent implements OnInit {
       }
     }
   }
-
 
 
   reset() {

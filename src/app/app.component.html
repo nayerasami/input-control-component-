@@ -2,6 +2,7 @@
   <div class="row my-5">
     <app-reusable-input-control
       #formInputControl
+      (myEvent)="getExperiencesValues($event)"
       [controlOptions]="options"
     ></app-reusable-input-control>
   </div>
